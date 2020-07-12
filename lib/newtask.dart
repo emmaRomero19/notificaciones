@@ -232,7 +232,6 @@ class _NewTaskState extends State<NewTask> {
                     SizedBox(height: 10),
                     TextFormField(
                       controller: controllerFecha,
-                      enabled: vh,
                       decoration: InputDecoration(
                           labelText: _dateTime == null
                               ? "Nothing has been picked yet"
@@ -261,7 +260,6 @@ class _NewTaskState extends State<NewTask> {
                     SizedBox(height: 10),
                     TextFormField(
                       controller: controllerHora,
-                      enabled: vh,
                       decoration: InputDecoration(
                           labelText: hora == null
                               ? "Nothing has been picked yet"
