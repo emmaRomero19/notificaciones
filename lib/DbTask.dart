@@ -11,15 +11,13 @@ class DBTask {
   static const String Id = 'control';
   static const String TITLE = 'title';
   static const String BODY = 'body';
-  static const String YEAR = 'year';
-  static const String MES = 'mes';
-  static const String DIA = 'dia';
+  static const String FECHA = 'fecha';
   static const String HORA = 'hora';
-  static const String MINUTOS = 'minutos';
-  static const String SEGUNDOS = 'segundos';
   static const String DETALLES = 'detalles';
+  static const String ESTADO = 'estado';
+  static const String PHOTO = 'photo';
   static const String TABLE = 'Tasks';
-  static const String DB_NAME = 'students04.db';
+  static const String DB_NAME = 'students05.db';
 
 
 //creacion de la base de datos
@@ -45,12 +43,59 @@ class DBTask {
 
   _onCreate(Database db, int version) async {
     await db.execute(
-        "CREATE TABLE $TABLE ($Id INTEGER PRIMARY KEY, $TITLE TEXT, $BODY TEXT, $DETALLES TEXT, $HORA TEXT, $MINUTOS TEXT, $SEGUNDOS TEXT)");
+        "CREATE TABLE $TABLE ($Id INTEGER PRIMARY KEY, $TITLE TEXT, $BODY TEXT, $FECHA TEXT, $HORA TEXT, $DETALLES TEXT, $ESTADO TEXT, $PHOTO BLOB)");
   }
 
   Future<List<MapTask>> getTask () async {
     var dbClient = await db;
-    List<Map> map = await dbClient.query(TABLE, columns: [Id, TITLE, BODY,DETALLES, HORA, MINUTOS, SEGUNDOS, ]);
+    List<Map> map = await dbClient.query(TABLE, columns: [Id, TITLE, BODY,  FECHA, HORA, DETALLES, ESTADO, PHOTO], where: '$ESTADO=?', whereArgs: ["activo"]);
+    List<MapTask> taskList=[];
+    if (map.length > 0) {
+      for (int i = 0; i < map.length; i++) {
+        taskList.add(MapTask.fromMap(map[i]));
+      }
+    }
+    return taskList;
+  }
+  Future<int> getId () async {
+    var dbClient = await db;
+    List<Map> map = await dbClient.query(TABLE, columns: [Id]);
+    int num;
+    if (map.length > 0) {
+      for (int i = 0; i < map.length; i++) {
+        num=i;
+        }
+    }
+    return num;
+  }
+  Future<List> getControl () async {
+    var dbClient = await db;
+    List<Map> map = await dbClient.query(TABLE, columns: [Id]);
+    List taskList=[];
+    if (map.length > 0) {
+      for (int i = 0; i < map.length; i++) {
+        taskList.add(MapTask.fromMap(map[i]));
+      }
+    }
+    return taskList;
+  }
+
+  Future<List<MapTask>> getColumn (int id) async {
+    var dbClient = await db;
+    List<Map> map = await dbClient.query(TABLE, columns: [Id, TITLE, BODY,  FECHA, HORA, DETALLES, ESTADO, PHOTO], where: '$Id =?', whereArgs:[id]);
+    List<MapTask> taskList=[];
+    if (map.length > 0) {
+      for (int i = 0; i < map.length; i++) {
+        taskList.add(MapTask.fromMap(map[i]));
+      }
+    }
+    return taskList;
+  }
+
+
+  Future<List<MapTask>> getTable () async {
+    var dbClient = await db;
+    List<Map> map = await dbClient.query(TABLE, columns: [Id, TITLE, BODY,  FECHA, HORA, DETALLES, ESTADO, PHOTO]);
     List<MapTask> taskList=[];
     if (map.length > 0) {
       for (int i = 0; i < map.length; i++) {
@@ -80,4 +125,9 @@ class DBTask {
         whereArgs: [maptask.control]);
   }
 
+  //Close Database
+  Future closedb() async {
+    var dbClient = await db;
+    dbClient.close();
+  }
 }
