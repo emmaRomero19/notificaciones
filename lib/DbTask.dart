@@ -57,28 +57,6 @@ class DBTask {
     }
     return taskList;
   }
-  Future<int> getId () async {
-    var dbClient = await db;
-    List<Map> map = await dbClient.query(TABLE, columns: [Id]);
-    int num;
-    if (map.length > 0) {
-      for (int i = 0; i < map.length; i++) {
-        num=i;
-        }
-    }
-    return num;
-  }
-  Future<List> getControl () async {
-    var dbClient = await db;
-    List<Map> map = await dbClient.query(TABLE, columns: [Id]);
-    List taskList=[];
-    if (map.length > 0) {
-      for (int i = 0; i < map.length; i++) {
-        taskList.add(MapTask.fromMap(map[i]));
-      }
-    }
-    return taskList;
-  }
 
   Future<List<MapTask>> getColumn (int id) async {
     var dbClient = await db;

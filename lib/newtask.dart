@@ -151,10 +151,6 @@ class _NewTaskState extends State<NewTask> {
       MapTask map = MapTask(null, title, body, detalles, fecha, hora, "activo", image);
       dbTask.insert(map);
       refreshList();
-      getcon=await dbTask.getControl();
-      Map<String, dynamic> getcon2= getcon[getcon.length-1].toMap();
-      id=int.parse(getcon2['control'].toString());
-      print(id);
     }
     cleanData();
   }
